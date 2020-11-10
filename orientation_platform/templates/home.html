@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <p>This is the platform's homepage. This will display news, articles, etc related to your job.</p>
+  <div>
+    <p>Click the button below to login and start your training!</p>
+    <button type="button"><a href="{% url 'login' %}">Log In</a></button>
+  </div>
+
+{% endblock %}
