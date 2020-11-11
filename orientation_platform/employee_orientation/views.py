@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-def home(request):
-    return render(request, template_name='home.html')
+def homepage(request):
+    return render(request, template_name='homepage.html')
 
 
 def about(request):
@@ -39,7 +39,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('home')
+    return redirect('homepage')
 
 
 def ask_for_registration(request):
@@ -54,3 +54,7 @@ def trainee_profile(request):
 @login_required()
 def mentor_profile(request):
     return render(request, template_name='pages/mentor_profile.html')
+
+@login_required()
+def trainings(request):
+    return render(request, template_name='pages/trainings.html')
