@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User, AbstractUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView
+from django.core.files.storage import FileSystemStorage
+
+from .models.training_material import TrainingMaterial
+from .models.training import Training
+from .forms import UploadTrainingMaterialForm, AddTrainingForm
 
 
 # Create your views here.
@@ -55,6 +61,34 @@ def trainee_profile(request):
 def mentor_profile(request):
     return render(request, template_name='pages/mentor_profile.html')
 
+
 @login_required()
 def trainings(request):
-    return render(request, template_name='pages/trainings.html')
+    trainings_list = TrainingMaterial.objects.all()
+    return render(request, template_name='pages/trainings.html', context={'trainings_list': trainings_list})
+
+
+def add_training(request):
+    if request.method == 'POST':
+        add_training_form = AddTrainingForm(request.POST)
+        if add_training_form.is_valid():
+            add_training_form.save()
+            return redirect('add_training_material')
+    else:
+        add_training_form = AddTrainingForm()
+    return render(request, template_name='pages/add_training.html', context={
+        'add_training_form': add_training_form
+    })
+
+
+def add_training_material(request):
+    if request.method == 'POST':
+        form = UploadTrainingMaterialForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('trainings')
+    else:
+        form = UploadTrainingMaterialForm()
+    return render(request, template_name='pages/add_training_material.html', context={
+        'form': form
+    })

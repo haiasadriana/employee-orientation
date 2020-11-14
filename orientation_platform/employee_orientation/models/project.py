@@ -5,8 +5,8 @@ from .training import Training
 
 class Project(models.Model):
     name = models.CharField(max_length=50, null=True)
-    start_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    end_date = models.DateTimeField(null=True)
+    start_date = models.TimeField(default=timezone.now, null=True, blank=True)
+    end_date = models.TimeField(null=True)
     training_name = models.ForeignKey(Training, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
